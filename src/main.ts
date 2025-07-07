@@ -6,19 +6,20 @@ import { join } from 'path';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // ✅ Servir arquivos estáticos da pasta 'public'
-  // Exemplo: https://jornadamilhas-backend.onrender.com/public/veneza.png
+  // Servir arquivos estáticos da pasta 'public'
   app.use('/public', express.static(join(__dirname, '..', 'public')));
 
-  // ✅ Habilitar CORS para permitir requisições do front-end (local + Vercel)
+  // Habilitar CORS
   app.enableCors({
     origin: [
-      'http://localhost:4200', // Front local (dev)
-      'https://alura-jornada-milhas.vercel.app', // Front produção (Vercel)
+      'http://localhost:4200',
+      'https://alura-jornada-milhas.vercel.app',
     ],
   });
 
-  // ✅ Iniciar o servidor na porta definida ou na 8080 por padrão
+  // Aqui adiciona o prefixo global
+  app.setGlobalPrefix('api');
+
   await app.listen(process.env.PORT || 8080);
 }
 bootstrap();
