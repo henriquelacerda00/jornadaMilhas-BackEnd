@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppService } from './app.service';
 import { EstadosModule } from './estados/estados.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { config } from '../ormconfig';
+import { config } from './ormconfig';
 import { DataSource } from 'typeorm';
 import { PassagemModule } from './passagem/passagem.module';
 import { CompanhiasModule } from './companhias/companhias.module';
