@@ -1,8 +1,11 @@
 import { DataSourceOptions } from 'typeorm';
+import { join } from 'path';
 
 export const config: DataSourceOptions = {
   type: 'sqlite',
-  database: 'db/sql.sqlite',
-  synchronize: false, // Obs: use synchronize: true somente em desenvolvimento.
+  database: join(__dirname, '..', 'db', 'sql.sqlite'),
+  synchronize: true, // Use true para desenvolvimento, depois altere para false em produção
   entities: [__dirname + '/**/*.entity{.ts,.js}'],
 };
+
+export default config;

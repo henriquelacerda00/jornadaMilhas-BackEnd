@@ -1,12 +1,14 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Depoimento } from './entities/depoimento.entity';
 import { CreateDepoimentoDto } from './dto/create-depoimento.dto';
 import { UpdateDepoimentoDto } from './dto/update-depoimento.dto';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Depoimento } from './entities/depoimento.entity';
-import { Repository } from 'typeorm';
 
 @Injectable()
 export class DepoimentosService {
+  private readonly baseUrl = process.env.BASE_URL || 'http://localhost:8080';
+
   constructor(
     @InjectRepository(Depoimento)
     private repository: Repository<Depoimento>,
@@ -16,8 +18,15 @@ export class DepoimentosService {
     return this.repository.save(createDepoimentoDto);
   }
 
-  findAll() {
-    return this.repository.find();
+  async findAll() {
+    const depoimentos = await this.repository.find();
+
+    return depoimentos.map((dep) => ({
+      ...dep,
+      avatar: dep.avatar.startsWith('http')
+        ? dep.avatar
+        : `${this.baseUrl}/public/${dep.avatar}`,
+    }));
   }
 
   findOne(id: number) {
